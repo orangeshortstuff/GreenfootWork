@@ -63,8 +63,7 @@ public class MarioWorld extends World
     private int getPyramidSize()
     {
         String reply = Greenfoot.ask("Enter the pyramid size (1-8) > ");
-        int size = Integer.parseInt(reply); 
-
+        int size = Integer.parseInt(reply);
         return size;
     } 
     
@@ -76,11 +75,36 @@ public class MarioWorld extends World
      */
     public void buildPyramid()
     {
+        int START_X = 4;
         int size = getPyramidSize();
-        int x = 4; int y = GROUND_ROW;
+        int x = START_X; int y = GROUND_ROW;
+        for (int runs = size; runs > 0; runs--)
+        {
+            x = 4 + size - runs;
+            for (int base = runs; base > 0; base--)
+            {
+                Block Block = new Block();
+                addObject(Block, x, y);
+                x++;
+            }
+            y--;
+        }
         
-        Block Block = new Block();
-        addObject(Block, x, y);
+        y = GROUND_ROW;
+        
+        for (int runs = size; runs > 0; runs--)
+        {
+            x = 5 + size;
+            for (int base = runs; base > 0; base--)
+            {
+                Block Block = new Block();
+                addObject(Block, x, y);
+                x++;
+            }
+            y--;
+        }
+
     }
     
 }
+
