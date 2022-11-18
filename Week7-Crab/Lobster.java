@@ -10,8 +10,12 @@ import java.util.List;
  */
 public class Lobster extends Animal
 {
-    private int speed = 2;
+    private int speed;
     private Random generator = new Random();
+    
+    private CrabWorld world;
+    
+    private int rotateTimer;
     
     /**
      * This method looks to see if the crab is within a certain
@@ -21,8 +25,30 @@ public class Lobster extends Animal
      */
     public void act()
     {
-        // Add your action code here.
+        world = (CrabWorld)getWorld();
+        speed = 2 + (int)(world.points / 80);
+        if(getNeighbours(200 + world.points,true,Crab.class).size() > 0)
+        {
+            turnTowards(world.crab.getX(),world.crab.getY());
+            if (isTouching(Crab.class))
+            {
+                removeTouching(Crab.class);
+                world.loseGame();
+            }
+        }
+        else
+        {
+            if (rotateTimer == 0)
+            {
+                turn(-60);
+                turn(generator.nextInt(120));
+                rotateTimer = 40;
+            }
+            else 
+            {
+                rotateTimer--;
+            }
+        }
         move(speed);
     }
-    
 }

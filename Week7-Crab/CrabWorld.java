@@ -7,7 +7,7 @@ public class CrabWorld extends World
 {
     public static final int MAXN_WORMS = 20;
     
-    private Crab crab;
+    protected Crab crab;
     private Lobster lobster;
     
     private Worm[] worms;
@@ -16,6 +16,7 @@ public class CrabWorld extends World
     
     private Random generator = new Random();
     private Counter score;
+    protected int points;
     
     /**
      * Constructor for objects of class MyWorld.
@@ -27,10 +28,10 @@ public class CrabWorld extends World
         super(800, 600, 1); 
         
         crab = new Crab();
-        addObject(crab, 200, 200);
+        addObject(crab, generator.nextInt(getWidth()), generator.nextInt(getHeight()));
         
         lobster = new Lobster();
-        addObject(lobster, 600, 400);
+        addObject(lobster, generator.nextInt(getWidth()), generator.nextInt(getHeight()));
         
         worms = new Worm[MAXN_WORMS];
         addWorms();
@@ -43,7 +44,12 @@ public class CrabWorld extends World
      */
     public void addWorms()
     {
-        createWorm();
+        while (remainingWorms > 0)
+        {
+            createWorm();
+            remainingWorms--;
+        }
+        remainingWorms = MAXN_WORMS;
     }
     
     /**
@@ -57,16 +63,32 @@ public class CrabWorld extends World
         int x = generator.nextInt(getWidth());
         int y = generator.nextInt(getHeight());
         
-         addObject(worm, x, y);
+        addObject(worm, x, y);
     }
     
     public void score()
     {
+        points++;
+        remainingWorms--;
+        if (remainingWorms == 0)
+        {
+            if (points == 100)
+            {
+                removeObject(lobster);
+                winGame();
+            }
+            else 
+            {
+                remainingWorms = MAXN_WORMS;
+                addWorms();
+            }
+        }
+        setupScore();
     }
     
     private void setupScore()
     {
-        score = new Counter("Score: ");
+        score = new Counter("Score: " + points);
         addObject (score, 60, 30);
     }
     

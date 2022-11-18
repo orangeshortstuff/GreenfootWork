@@ -34,8 +34,15 @@ public class Crab extends Animal
      */
     public void act()
     {
-        turnAndMove(); 
-        eat(Worm.class);
+        move4Ways();
+        if(isTouching(Worm.class))
+        {
+            removeTouching(Worm.class);
+            Greenfoot.playSound("slurp.wav");
+                
+            world = (CrabWorld)getWorld();
+            world.score(); 
+        }
     }
     
     /**
@@ -73,25 +80,25 @@ public class Crab extends Animal
         
         if(Greenfoot.isKeyDown("left") && x > halfWidth)
         {
-            setRotation(270);
+            setRotation(180);
             x -= speed;
         }
         
         if(Greenfoot.isKeyDown("right") && !isAtEdge())
         {
-            setRotation(90);
+            setRotation(0);
             x += speed;
         }        
         
         if(Greenfoot.isKeyDown("down") && !isAtEdge())
         {
-            setRotation(180);
+            setRotation(90);
             y += speed;
         } 
         
         if(Greenfoot.isKeyDown("up") && y > speed)
         {
-            setRotation(0);
+            setRotation(270);
             y -= speed;
         }
         
