@@ -17,6 +17,10 @@ public class GameWorld extends World
     
     private Counter score;
     
+    
+    protected int rowsNextRound = 1;
+    protected int bricksLeft = rowsNextRound * 5;
+    
     /**
      * Constructor for objects of class MyWorld.
      * 
@@ -41,19 +45,33 @@ public class GameWorld extends World
     {
         if(winGame)
         {
-            showText("Game Over: You Won!",300, 200);
+            if (rowsNextRound > 3)
+            {
+                showText("Game Over: You Won!",300, 200);
+            }
+            else
+                setupBricks();
         }
         else
             showText("Game Over: You Lost!",300, 200);
-
     }
     
     private void setupBricks()
     {
+        for(int i = 0; i < rowsNextRound; i++)
+        {
+            for(int j = 0; j < 5; j++)
+            {
+                Brick brick = new Brick(20,60);
+                addObject(brick, 560-(40*i), 40+(80*j));
+            }
+        }
+        bricksLeft = rowsNextRound * 5;
     }
     
     public void increaseScore()
     {
         score.add(10);
+        bricksLeft--;
     }
 }

@@ -38,10 +38,43 @@ public class Ball extends ShapeSprite
         
         checkCollisions();
         
-        setLocation(x + dx, y + dy);
+        if (game.bricksLeft == 0) 
+        {
+            game.rowsNextRound++;
+            game.endGame(true);
+            setLocation(100 - dx, y + dy);
+        }
+        else
+            setLocation(x + dx, y + dy);
     }
     
     private void checkCollisions()
     {
+        if(getOneIntersectingObject(Brick.class) != null)
+        {
+            removeTouching(Brick.class);
+            game.increaseScore();
+            dx = -dx;
+        }
+        
+        if(getOneIntersectingObject(Paddle.class) != null)
+        {
+            dx = -dx;
+        }
+        
+        if (this.getX() + dx < 0)
+        {
+            game.endGame(false);
+        }
+            
+        if (this.getY() + dy > game.getHeight() || this.getY() + dy < 0) 
+        {
+            dy = -dy;
+        }
+            
+        if (this.getX() + dx > game.getWidth()) 
+        {
+            dx = -dx;
+        }
     }
 }

@@ -28,9 +28,8 @@ public class Paddle extends ShapeSprite
     }
     
     /**
-     * This method moves the paddle around in four directions
-     * using coordinate positions.  Could use turtle graphics 
-     * instead without x,y coordinates.
+     * This method moves the paddle up or down
+     * at the current speed.
      */
     public void move()
     {
